@@ -1,0 +1,213 @@
+diff --git a/takkernel/engine/CMakeLists.txt b/takkernel/engine/CMakeLists.txt
+index 3800336..f5646b8 100644
+--- a/takkernel/engine/CMakeLists.txt
++++ b/takkernel/engine/CMakeLists.txt
+@@ -30,7 +30,6 @@ if(NOT ANDROID)
+                             ttp-dist/4.2.4
+                             libLAS/1.8.2f
+                             draco/1.5.7
+-                            cesium-native/0.40.1
+                           GENERATORS
+                             cmake_find_package)
+ else()
+@@ -41,7 +40,6 @@ else()
+                             ttp-dist/4.2.4
+                             libLAS/1.8.2f
+                             draco/1.5.7
+-                            cesium-native/0.40.1
+                           GENERATORS
+                             cmake_find_package)
+ endif()
+@@ -119,7 +117,7 @@ find_package (draco)
+ if(NOT ANDROID)
+     find_package (GLES-stub)
+ endif()
+-find_package (cesium-native)
++# find_package (cesium-native)  -- 3D Tiles (c3dt) excluded on ARM64
+ 
+ # Add the takengine sub-project.
+ add_subdirectory(src/main/cpp)
+diff --git a/takkernel/engine/src/main/cpp/cmake/CommonSources.cmake b/takkernel/engine/src/main/cpp/cmake/CommonSources.cmake
+index 9c34f02..dcc19ed 100644
+--- a/takkernel/engine/src/main/cpp/cmake/CommonSources.cmake
++++ b/takkernel/engine/src/main/cpp/cmake/CommonSources.cmake
+@@ -191,16 +191,6 @@ set(takengine_formats_cesium3dtiles_COMMON_SRCS
+     ${SRC_DIR}/formats/cesium3dtiles/PNTS.cpp
+     ${SRC_DIR}/formats/cesium3dtiles/B3DM.cpp
+     ${SRC_DIR}/formats/cesium3dtiles/C3DTTileset.cpp
+-	${SRC_DIR}/formats/c3dt/CesiumNative.cpp
+-	${SRC_DIR}/formats/c3dt/CesiumUtility.cpp
+-	${SRC_DIR}/formats/c3dt/GLTFRenderer.cpp
+-	${SRC_DIR}/formats/c3dt/Model.cpp
+-	${SRC_DIR}/formats/c3dt/TakPrepareRendererResources.cpp
+-	${SRC_DIR}/formats/c3dt/TakTaskProcessor.cpp
+-	${SRC_DIR}/formats/c3dt/Tile.cpp
+-	${SRC_DIR}/formats/c3dt/TileExternalContent.cpp
+-	${SRC_DIR}/formats/c3dt/TileRenderContent.cpp
+-	${SRC_DIR}/formats/c3dt/Tileset.cpp
+ )
+ 
+ set (takengine_formats_drg_COMMON_SRCS
+@@ -586,7 +576,6 @@ set(takengine_renderer_impl_COMMON_SRCS
+ 
+ set(takengine_renderer_model_COMMON_SRCS
+     ${SRC_DIR}/renderer/model/GLBatch.cpp
+-    ${SRC_DIR}/renderer/model/GLC3DTRenderer.cpp
+     ${SRC_DIR}/renderer/model/GLMaterial.cpp
+     ${SRC_DIR}/renderer/model/GLMesh.cpp
+     ${SRC_DIR}/renderer/model/GLScene.cpp
+@@ -897,9 +886,6 @@ set(takengine_formats_cesium3dtiles_COMMON_HEADERS
+ 	${SRC_DIR}/formats/cesium3dtiles/PNTS.h
+ 	${SRC_DIR}/formats/cesium3dtiles/B3DM.h
+ 	${SRC_DIR}/formats/cesium3dtiles/C3DTTileset.h
+-	${SRC_DIR}/formats/c3dt/CesiumNative.h
+-	${SRC_DIR}/formats/c3dt/TakPrepareRendererResources.h
+-	${SRC_DIR}/formats/c3dt/TakTaskProcessor.h
+ )
+ 
+ set (takengine_formats_drg_COMMON_HEADERS
+@@ -1282,7 +1268,6 @@ set(takengine_renderer_feature_COMMON_HEADERS
+ 
+ set(takengine_renderer_model_COMMON_HEADERS
+     ${SRC_DIR}/renderer/model/GLBatch.h
+-    ${SRC_DIR}/renderer/model/GLC3DTRenderer.h
+     ${SRC_DIR}/renderer/model/GLMaterial.h
+     ${SRC_DIR}/renderer/model/GLMesh.h
+     ${SRC_DIR}/renderer/model/GLScene.h
+diff --git a/takkernel/engine/src/main/cpp/cmake/LinuxSources.cmake b/takkernel/engine/src/main/cpp/cmake/LinuxSources.cmake
+index 256a5bf..61ecfe6 100644
+--- a/takkernel/engine/src/main/cpp/cmake/LinuxSources.cmake
++++ b/takkernel/engine/src/main/cpp/cmake/LinuxSources.cmake
+@@ -16,11 +16,11 @@ set(takengine_LINUX_DEFS
+ 
+ set(takengine_LINUX_INCS
+ 	${draco_INCLUDE_DIRS}
+-	${cesium-native_INCLUDE_DIRS}
++	
+ )
+ 
+ set(takengine_LINUX_LDIRS
+-	${cesium-native_LIB_DIRS}
++	
+     ${ttp-dist_LIB_DIRS}
+     ${GLES-stub_LIB_DIRS}
+     ${libLAS_LIB_DIRS}
+@@ -167,7 +167,7 @@ set(takengine_LINUX_LIBS
+     las_c
+     draco
+ 
+-	${takengine_LINUX_CESIUM_NATIVE_LIBS}
++	
+ )
+ 
+ set(takengine_LINUX_OPTS
+diff --git a/takkernel/engine/src/main/cpp/renderer/model/GLSceneLayer.cpp b/takkernel/engine/src/main/cpp/renderer/model/GLSceneLayer.cpp
+index 6a2b68c..af7c637 100644
+--- a/takkernel/engine/src/main/cpp/renderer/model/GLSceneLayer.cpp
++++ b/takkernel/engine/src/main/cpp/renderer/model/GLSceneLayer.cpp
+@@ -19,7 +19,7 @@
+ #include "renderer/model/SceneObjectControl.h"
+ #include "renderer/model/SceneObjectControl2.h"
+ #include "thread/Lock.h"
+-#include "renderer/model/GLC3DTRenderer.h"
++// GLC3DTRenderer excluded on ARM64 (no cesium-native)
+ 
+ using namespace TAK::Engine::Renderer::Model;
+ 
+@@ -497,16 +497,7 @@ GLSceneLayer::SceneRenderer::SceneRenderer(GLSceneLayer &owner_, RenderContext &
+                 ctrl2 = static_cast<SceneObjectControl2 *>(octrl2);
+         }
+ 
+-        //XXX-- this should be some common interface instead of specific impls
+-        auto* c3dt = dynamic_cast<GLC3DTRenderer*>(value.get());
+-        if (c3dt) {
+-            void* octrl;
+-            if(c3dt->getControl(&octrl, SceneObjectControl_getType()) == TE_Ok)
+-                ctrl = static_cast<SceneObjectControl *>(octrl);
+-            void *octrl2;
+-            if(c3dt->getControl(&octrl2, SceneObjectControl2_getType()) == TE_Ok)
+-                ctrl2 = static_cast<SceneObjectControl2 *>(octrl2);
+-        }
++        // (C3DT renderer control lookup removed: GLC3DTRenderer excluded on ARM64)
+ 
+         // if renderer advertised v2 control, but not v1, assign out v2 for both
+         if (ctrl2 && !ctrl)
+diff --git a/takkernel/engine/src/main/jni/cmake/CommonSources.cmake b/takkernel/engine/src/main/jni/cmake/CommonSources.cmake
+index bc1be6c..bbe2d06 100644
+--- a/takkernel/engine/src/main/jni/cmake/CommonSources.cmake
++++ b/takkernel/engine/src/main/jni/cmake/CommonSources.cmake
+@@ -11,12 +11,6 @@ set(takenginejni_COMMON_INCS
+ 
+ set(takenginejni_COMMON_SRCS
+     ${SRC_DIR}/atakjni.cpp
+-    ${SRC_DIR}/c3dt/jcesiumutility.cpp
+-    ${SRC_DIR}/c3dt/jmodel.cpp
+-    ${SRC_DIR}/c3dt/jtile.cpp
+-    ${SRC_DIR}/c3dt/jtilerendercontent.cpp
+-    ${SRC_DIR}/c3dt/jtileset.cpp
+-    ${SRC_DIR}/c3dt/shaders.cpp
+     ${SRC_DIR}/common.cpp
+     ${SRC_DIR}/interop/core/Interop.cpp
+     ${SRC_DIR}/interop/core/ManagedLayer.cpp
+@@ -57,10 +51,6 @@ set(takenginejni_COMMON_SRCS
+     ${SRC_DIR}/interop/math/ManagedGeometryModel.cpp
+     ${SRC_DIR}/interop/model/Interop.cpp
+     ${SRC_DIR}/interop/Pointer.cpp
+-    ${SRC_DIR}/interop/formats/c3dt/Interop.cpp
+-    ${SRC_DIR}/interop/formats/c3dt/ManagedAssetAccessor.cpp
+-    ${SRC_DIR}/interop/formats/c3dt/ManagedAssetRequest.cpp
+-    ${SRC_DIR}/interop/formats/c3dt/ManagedAssetResponse.cpp
+     ${SRC_DIR}/interop/formats/quantizedmesh/Interop.cpp
+     ${SRC_DIR}/interop/formats/quantizedmesh/ManagedQMESourceLayer.cpp
+     ${SRC_DIR}/interop/raster/tilematrix/Interop.cpp
+diff --git a/takkernel/engine/src/main/jni/cmake/LinuxSources.cmake b/takkernel/engine/src/main/jni/cmake/LinuxSources.cmake
+index 311eb12..f174971 100644
+--- a/takkernel/engine/src/main/jni/cmake/LinuxSources.cmake
++++ b/takkernel/engine/src/main/jni/cmake/LinuxSources.cmake
+@@ -13,7 +13,7 @@ set(takenginejni_LINUX_INCS
+     ${JNI_INCLUDE_DIRS}
+     ${SRC_DIR}/../../../build/java/generated/jni
+     ${draco_INCLUDE_DIRS}
+-    ${cesium-native_INCLUDE_DIRS}
++    
+ )
+ 
+ set(takenginejni_LINUX_LDIRS
+diff --git a/takkernel/engine/src/main/jni/jsceneinfofactory.cpp b/takkernel/engine/src/main/jni/jsceneinfofactory.cpp
+index 01d0ea9..fc0bfe0 100644
+--- a/takkernel/engine/src/main/jni/jsceneinfofactory.cpp
++++ b/takkernel/engine/src/main/jni/jsceneinfofactory.cpp
+@@ -13,7 +13,7 @@
+ #include <model/Pix4dGeoreferencer.h>
+ #include "port/STLVectorAdapter.h"
+ #include <renderer/model/GLSceneFactory.h>
+-#include <renderer/model/GLC3DTRenderer.h>
++// GLC3DTRenderer excluded on ARM64 (no cesium-native)
+ 
+ #include "common.h"
+ #include "interop/JNIStringUTF.h"
+@@ -28,11 +28,8 @@ using namespace TAKEngineJNI::Interop::Model;
+ 
+ // XXX - native C3DT implementation is deficient. When interop for `GLSceneFactory` is introduced,
+ //       native impl must be brought to parity or disabled
+-#ifdef __ANDROID__
++// ARM64 build without cesium-native: native C3DT disabled on all platforms
+ #define C3DT_ENABLED 0
+-#else
+-#define C3DT_ENABLED 1
+-#endif
+ 
+ class ImplGlobals {
+ public:
+diff --git a/takthirdparty/ci-support/conanfile.py b/takthirdparty/ci-support/conanfile.py
+index f9f08b8..cfb84bc 100644
+--- a/takthirdparty/ci-support/conanfile.py
++++ b/takthirdparty/ci-support/conanfile.py
+@@ -97,6 +97,6 @@ class TTPDistConan(ConanFile):
+         elif self.settings.os == "Macos":
+             source = "macos-64"
+         elif self.settings.os == "Linux":
+-            source = "linux-amd64"
++            source = "linux-arm64v8" if str(self.settings.arch) == "armv8" else "linux-amd64"
+         source += "-" + str(self.settings.build_type).lower()
+         return source

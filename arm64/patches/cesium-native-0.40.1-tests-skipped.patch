@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d987251..f00a289 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -61,7 +61,7 @@ set(PACKAGES_TEST catch2)
+ if(NOT VCPKG_MANIFEST_MODE)
+     set(PACKAGES_ALL ${PACKAGES_PUBLIC})
+     list(APPEND PACKAGES_ALL ${PACKAGES_PRIVATE})
+-    list(APPEND PACKAGES_ALL ${PACKAGES_TEST})
++    # tests skipped for the TAK engine build
+ 
+     ezvcpkg_fetch(
+         COMMIT 2024.07.12

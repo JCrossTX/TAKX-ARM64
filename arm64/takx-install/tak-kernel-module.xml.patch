@@ -1,0 +1,84 @@
+--- /opt/TAKX/modules/gov/tak/kernel/main/module.xml.orig-amd64	2026-11-19 05:48:51.960786294 +0000
++++ /opt/TAKX/modules/gov/tak/kernel/main/module.xml	2026-11-19 05:49:36.339911848 +0000
+@@ -1,40 +1,41 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module xmlns="urn:jboss:module:1.1" name="gov.tak.kernel">
+-  <resources>
+-    <resource-root path="android-port-7.0.1.jar" />
+-    <resource-root path="gdal-5.2.0-tak.jar" />
+-    <resource-root path="gdaldata-5.2.0.jar" />
+-    <resource-root path="gles-jogl-c-1.0.3.jar" />
+-    <resource-root path="jassimp-5.2.0-tak.jar" />
+-    <resource-root path="libLAS-linux64-1.8.2i.jar" />
+-    <resource-root path="libLAS-linux64-1.8.2i.jar" />
+-    <resource-root path="takkernel-all-9.11.5.jar" />
+-    <resource-root path="takkernel-annotation-9.11.5.jar" />
+-    <resource-root path="takkernel-engine-9.11.5.jar" />
+-    <resource-root path="takkernel-engine-rt-linux64-9.11.5.jar" />
+-    <resource-root path="takkernel-engine-rt-linux64-9.11.5.jar" />
+-    <resource-root path="takkernel-port-9.11.5.jar" />
+-    <resource-root path="takkernel-shared-9.11.5.jar" />
+-    <resource-root path="takthirdparty-rt-linux64-5.2.0.jar" />
+-    <resource-root path="takthirdparty-rt-linux64-5.2.0.jar" />
+-  </resources>
+-  <dependencies>
+-    <module name="jakarta.persistence.jakarta.persistence-api" />
+-    <module name="com.fasterxml.jackson.core.jackson-annotations" />
+-    <module name="com.fasterxml.jackson.core.jackson-core" />
+-    <module name="org.jogamp.jogl" />
+-    <module name="com.fasterxml.jackson.core.jackson-databind" />
+-    <module name="com.squareup.okhttp3" />
+-    <module name="io.github.missioncommand.mil-sym-renderer" />
+-    <module name="net.sf.kxml.kxml2" />
+-    <module name="org.apache.commons.commons-math3" />
+-    <module name="org.apache.commons.commons-text" />
+-    <module name="org.apache.httpcomponents.httpclient" />
+-    <module name="org.bouncycastle.bcpkix-jdk18on" />
+-    <module name="org.bouncycastle.bcprov-jdk18on" />
+-    <module name="org.greenrobot.eventbus" />
+-    <module name="org.json" />
+-    <module name="org.slf4j.slf4j-api" />
+-    <module name="jdk" services="import" />
+-  </dependencies>
+-</module>
++<?xml version="1.0" encoding="UTF-8"?>
++<module xmlns="urn:jboss:module:1.1" name="gov.tak.kernel">
++  <resources>
++    <resource-root path="android-port-7.0.1.jar" />
++    <resource-root path="gdal-5.2.0-tak.jar" />
++    <resource-root path="gdaldata-5.2.0.jar" />
++    <resource-root path="gles-jogl-c-1.0.3.jar" />
++    <resource-root path="jassimp-5.2.0-tak.jar" />
++    <resource-root path="libLAS-linux64-1.8.2i.jar" />
++    <resource-root path="libLAS-linux64-1.8.2i.jar" />
++    <resource-root path="takkernel-all-9.11.5.jar" />
++    <resource-root path="takkernel-annotation-9.11.5.jar" />
++    <resource-root path="takkernel-engine-9.11.5.jar" />
++    <resource-root path="takkernel-engine-rt-linux64-9.11.5.jar" />
++    <resource-root path="takkernel-engine-rt-linuxarm64-9.11.5-stage1.jar" />
++    <resource-root path="takkernel-engine-rt-linux64-9.11.5.jar" />
++    <resource-root path="takkernel-port-9.11.5.jar" />
++    <resource-root path="takkernel-shared-9.11.5.jar" />
++    <resource-root path="takthirdparty-rt-linux64-5.2.0.jar" />
++    <resource-root path="takthirdparty-rt-linux64-5.2.0.jar" />
++  </resources>
++  <dependencies>
++    <module name="jakarta.persistence.jakarta.persistence-api" />
++    <module name="com.fasterxml.jackson.core.jackson-annotations" />
++    <module name="com.fasterxml.jackson.core.jackson-core" />
++    <module name="org.jogamp.jogl" />
++    <module name="com.fasterxml.jackson.core.jackson-databind" />
++    <module name="com.squareup.okhttp3" />
++    <module name="io.github.missioncommand.mil-sym-renderer" />
++    <module name="net.sf.kxml.kxml2" />
++    <module name="org.apache.commons.commons-math3" />
++    <module name="org.apache.commons.commons-text" />
++    <module name="org.apache.httpcomponents.httpclient" />
++    <module name="org.bouncycastle.bcpkix-jdk18on" />
++    <module name="org.bouncycastle.bcprov-jdk18on" />
++    <module name="org.greenrobot.eventbus" />
++    <module name="org.json" />
++    <module name="org.slf4j.slf4j-api" />
++    <module name="jdk" services="import" />
++  </dependencies>
++</module>
