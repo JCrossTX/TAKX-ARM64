@@ -1,0 +1,53 @@
+--- /opt/TAKX/modules/org/jogamp/jogl/main/module.xml.orig-amd64	2026-11-19 04:47:58.387532990 +0000
++++ /opt/TAKX/modules/org/jogamp/jogl/main/module.xml	2026-11-19 04:51:30.312261268 +0000
+@@ -1,24 +1,26 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module xmlns="urn:jboss:module:1.1" name="org.jogamp.jogl">
+-  <resources>
+-    <resource-root path="gluegen-rt-2.5.0-natives-linux-amd64.jar" />
+-    <resource-root path="gluegen-rt-2.5.0-natives-macosx-universal.jar" />
+-    <resource-root path="gluegen-rt-2.5.0-natives-windows-amd64.jar" />
+-    <resource-root path="gluegen-rt-2.5.0.jar" />
+-    <resource-root path="jocl-2.5.0-natives-android-aarch64.jar" />
+-    <resource-root path="jocl-2.5.0-natives-linux-aarch64.jar" />
+-    <resource-root path="jocl-2.5.0-natives-linux-amd64.jar" />
+-    <resource-root path="jocl-2.5.0-natives-linux-armv6hf.jar" />
+-    <resource-root path="jocl-2.5.0-natives-macosx-universal.jar" />
+-    <resource-root path="jocl-2.5.0-natives-windows-amd64.jar" />
+-    <resource-root path="jocl-2.5.0.jar" />
+-    <resource-root path="jocl-main-2.5.0.jar" />
+-    <resource-root path="jogl-all-2.5.0-natives-linux-amd64.jar" />
+-    <resource-root path="jogl-all-2.5.0-natives-macosx-universal.jar" />
+-    <resource-root path="jogl-all-2.5.0-natives-windows-amd64.jar" />
+-    <resource-root path="jogl-all-2.5.0.jar" />
+-  </resources>
+-  <dependencies>
+-    <module name="jdk" services="import" />
+-  </dependencies>
+-</module>
++<?xml version="1.0" encoding="UTF-8"?>
++<module xmlns="urn:jboss:module:1.1" name="org.jogamp.jogl">
++  <resources>
++    <resource-root path="gluegen-rt-2.5.0-natives-linux-amd64.jar" />
++    <resource-root path="gluegen-rt-2.5.0-natives-linux-aarch64.jar" />
++    <resource-root path="gluegen-rt-2.5.0-natives-macosx-universal.jar" />
++    <resource-root path="gluegen-rt-2.5.0-natives-windows-amd64.jar" />
++    <resource-root path="gluegen-rt-2.5.0.jar" />
++    <resource-root path="jocl-2.5.0-natives-android-aarch64.jar" />
++    <resource-root path="jocl-2.5.0-natives-linux-aarch64.jar" />
++    <resource-root path="jocl-2.5.0-natives-linux-amd64.jar" />
++    <resource-root path="jocl-2.5.0-natives-linux-armv6hf.jar" />
++    <resource-root path="jocl-2.5.0-natives-macosx-universal.jar" />
++    <resource-root path="jocl-2.5.0-natives-windows-amd64.jar" />
++    <resource-root path="jocl-2.5.0.jar" />
++    <resource-root path="jocl-main-2.5.0.jar" />
++    <resource-root path="jogl-all-2.5.0-natives-linux-amd64.jar" />
++    <resource-root path="jogl-all-2.5.0-natives-linux-aarch64.jar" />
++    <resource-root path="jogl-all-2.5.0-natives-macosx-universal.jar" />
++    <resource-root path="jogl-all-2.5.0-natives-windows-amd64.jar" />
++    <resource-root path="jogl-all-2.5.0.jar" />
++  </resources>
++  <dependencies>
++    <module name="jdk" services="import" />
++  </dependencies>
++</module>

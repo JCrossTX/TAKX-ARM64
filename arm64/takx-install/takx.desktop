@@ -1,0 +1,13 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Name=TAKX
+Comment=TAKX 5.8.0 (TAK Product Center) installed in /opt/TAKX
+Exec=/opt/TAKX/takx-desktop.sh
+Path=/opt/TAKX
+Icon=/opt/TAKX/.install4j/TAKX.png
+Categories=Network;Geography;
+StartupNotify=true
+StartupWMClass=install4j-org-jboss-modules-Main_TAKX

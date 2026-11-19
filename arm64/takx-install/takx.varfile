@@ -1,0 +1,7 @@
+# TAKX 5.8.0 unattended install response file (Raspberry Pi CM4, ARM64)
+sys.installationDir=/opt/takx
+projectDataDir=/opt/takx
+renderingLimitsMode$Integer=0
+createDesktopLinkAction$Boolean=false
+sys.component.11485$Boolean=true
+sys.component.11490$Boolean=true

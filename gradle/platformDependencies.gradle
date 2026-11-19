@@ -86,7 +86,9 @@ dependencies {
     // This allows building against takkernel versions built locally.
     def platforms
     if (System.getenv('TAKKERNEL_LOCAL')) {
-        def platformMapping = ['windows': 'win', 'linux': 'linux', 'macosx': 'macos']
+        // ARM64 Linux hosts (e.g. Raspberry Pi) use the 'linuxarm64' kernel runtime variant
+        def linuxPlatform = (System.getProperty('os.arch') in ['aarch64', 'arm64']) ? 'linuxarm' : 'linux'
+        def platformMapping = ['windows': 'win', 'linux': linuxPlatform, 'macosx': 'macos']
         platforms = [platformMapping[osFamily]]
     } else {
         platforms = ['win', 'linux']
